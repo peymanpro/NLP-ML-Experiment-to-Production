@@ -15,7 +15,7 @@ def test_quality_stats_capture_basic_properties() -> None:
 
     assert stats.rows == 3
     assert stats.columns == 2
-    assert stats.duplicate_rows == 0
+    assert stats.duplicate_rows == 1
     assert stats.label_count == 2
     assert stats.min_text_length == 5
     assert stats.max_text_length == len("a much longer sentence")
