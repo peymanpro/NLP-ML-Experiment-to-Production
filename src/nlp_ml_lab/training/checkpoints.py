@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from pathlib import Path
 
 import torch
@@ -35,9 +36,10 @@ def load_checkpoint(
 
     state = payload.get("model_state")
     metadata = payload.get("metadata")
+    if not isinstance(state, Mapping):
+        raise TypeError("checkpoint model_state must be a mapping")
     if not isinstance(metadata, dict) or not all(
-        isinstance(key, str) and isinstance(value, str)
-        for key, value in metadata.items()
+        isinstance(key, str) and isinstance(value, str) for key, value in metadata.items()
     ):
         raise TypeError("checkpoint metadata must be a string dictionary")
 
