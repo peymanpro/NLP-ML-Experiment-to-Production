@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import builtins
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -31,7 +32,7 @@ class ModelRegistry:
             encoding="utf-8",
         )
 
-    def list(self) -> list[ModelRecord]:
+    def list(self) -> builtins.list[ModelRecord]:
         return [ModelRecord(**record) for record in self._read()]
 
     def promote(
@@ -57,7 +58,7 @@ class ModelRegistry:
         if target is None:
             raise KeyError(f"model not found: {model_name}:{version}")
 
-        updated: list[ModelRecord] = []
+        updated: builtins.list[ModelRecord] = []
         for record in records:
             record_stage = record.stage
             if (
@@ -69,13 +70,10 @@ class ModelRegistry:
                 record_stage = "archived"
             if record.model_name == model_name and record.version == version:
                 record_stage = stage
-            updated.append(
-                ModelRecord(**{**asdict(record), "stage": record_stage})
-            )
+            updated.append(ModelRecord(**{**asdict(record), "stage": record_stage}))
 
         self.path.write_text(
-            json.dumps([asdict(record) for record in updated], indent=2, sort_keys=True)
-            + "\n",
+            json.dumps([asdict(record) for record in updated], indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
         return next(
@@ -84,10 +82,10 @@ class ModelRegistry:
             if record.model_name == model_name and record.version == version
         )
 
-    def _read(self) -> list[dict[str, Any]]:
+    def _read(self) -> builtins.list[dict[str, Any]]:
         if not self.path.exists():
             return []
         payload: Any = json.loads(self.path.read_text(encoding="utf-8"))
         if not isinstance(payload, list):
             raise TypeError("model registry file must contain a list")
-        return cast(list[dict[str, Any]], payload)
+        return cast(builtins.list[dict[str, Any]], payload)
