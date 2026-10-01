@@ -16,5 +16,7 @@ data/processed/
 models/
 reports/generated/
 
+*.egg-info/
+
 .DS_Store
 Thumbs.db
