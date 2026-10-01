@@ -37,9 +37,7 @@ class HybridSearchPipeline:
         )
 
         if self.reranker is None:
-            score_by_id = {
-                item.document_id: item.score for item in lexical_results
-            }
+            score_by_id = {item.document_id: item.score for item in lexical_results}
             score_by_id.update({item[0]: item[1] for item in dense_results})
             return [
                 (document_id, float(score_by_id.get(document_id, 0.0)))
