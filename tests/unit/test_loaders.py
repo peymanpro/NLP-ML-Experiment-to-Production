@@ -9,9 +9,7 @@ from nlp_ml_lab.data.loaders import load_huggingface_frame
 
 def test_huggingface_frame_loader_converts_split_to_dataframe(tmp_path: Path) -> None:
     fake_dataset = Mock()
-    fake_dataset.to_pandas.return_value = pd.DataFrame(
-        {"text": ["hello"], "label": [1]}
-    )
+    fake_dataset.to_pandas.return_value = pd.DataFrame({"text": ["hello"], "label": [1]})
 
     with patch(
         "nlp_ml_lab.data.loaders.load_dataset",
