@@ -1,7 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Protocol
 
 import torch
+from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
 from nlp_ml_lab.observability.metrics import InferenceMetrics
 
@@ -16,11 +17,7 @@ class TextPredictor(Protocol):
 @dataclass
 class InferenceService:
     predictor: TextPredictor | None = None
-    metrics: InferenceMetrics | None = None
-
-    def __post_init__(self) -> None:
-        if self.metrics is None:
-            self.metrics = InferenceMetrics()
+    metrics: InferenceMetrics = field(default_factory=InferenceMetrics)
 
     @property
     def ready(self) -> bool:
@@ -35,8 +32,6 @@ class InferenceService:
             raise ValueError("text must not be blank")
         if self.predictor is None:
             raise RuntimeError("model is not loaded")
-        if self.metrics is None:
-            raise RuntimeError("metrics are not initialized")
 
         from time import perf_counter
 
@@ -54,10 +49,10 @@ class InferenceService:
 @dataclass
 class TorchTextPredictor:
     model: torch.nn.Module
-    tokenizer: object
+    tokenizer: PreTrainedTokenizerBase
     labels: list[str]
     model_version: str
-    device: torch.device = torch.device("cpu")
+    device: torch.device = field(default_factory=lambda: torch.device("cpu"))
 
     def predict(self, text: str) -> tuple[str, float]:
         self.model.eval()

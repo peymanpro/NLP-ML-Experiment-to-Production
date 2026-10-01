@@ -1,6 +1,7 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
+from typing import Any, cast
 
 
 @dataclass(frozen=True)
@@ -20,7 +21,7 @@ class ModelRegistry:
         self.path = path
 
     def register(self, record: ModelRecord) -> None:
-        records = self._read()
+        records = [asdict(item) for item in self.list()]
         records.append(asdict(record))
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(
@@ -54,32 +55,37 @@ class ModelRegistry:
         if target is None:
             raise KeyError(f"model not found: {model_name}:{version}")
 
-        updated = [
-            ModelRecord(**{
-                **asdict(record),
-                "stage": stage if record is target else (
-                    "candidate" if record.model_name == model_name
-                    and record.stage == "production"
-                    and stage == "production"
-                    else record.stage
-                ),
-            })
-            for record in records
-        ]
+        updated: list[ModelRecord] = []
+        for record in records:
+            record_stage = record.stage
+            if (
+                stage == "production"
+                and record.model_name == model_name
+                and record.version != version
+                and record.stage == "production"
+            ):
+                record_stage = "archived"
+            if record.model_name == model_name and record.version == version:
+                record_stage = stage
+            updated.append(
+                ModelRecord(**{**asdict(record), "stage": record_stage})
+            )
+
         self.path.write_text(
             json.dumps([asdict(record) for record in updated], indent=2, sort_keys=True)
             + "\n",
             encoding="utf-8",
         )
         return next(
-            record for record in updated
+            record
+            for record in updated
             if record.model_name == model_name and record.version == version
         )
 
-    def _read(self) -> list[dict]:
+    def _read(self) -> list[dict[str, Any]]:
         if not self.path.exists():
             return []
-        payload = json.loads(self.path.read_text(encoding="utf-8"))
+        payload: Any = json.loads(self.path.read_text(encoding="utf-8"))
         if not isinstance(payload, list):
             raise TypeError("model registry file must contain a list")
-        return payload
+        return cast(list[dict[str, Any]], payload)

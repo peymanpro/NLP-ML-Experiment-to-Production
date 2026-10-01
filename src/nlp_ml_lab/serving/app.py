@@ -1,10 +1,9 @@
 from fastapi import FastAPI, HTTPException, Response, status
 
-from nlp_ml_lab.observability.metrics import InferenceMetrics
 from nlp_ml_lab.serving.schemas import PredictionRequest, PredictionResponse, ServiceStatus
 from nlp_ml_lab.serving.service import InferenceService
 
-service = InferenceService(metrics=InferenceMetrics())
+service = InferenceService()
 
 app = FastAPI(
     title="NLP ML Experiment-to-Production",
@@ -38,8 +37,6 @@ def ready(response: Response) -> ServiceStatus:
 @app.get("/metrics")
 def metrics() -> dict[str, float | int]:
     telemetry = service.metrics
-    if telemetry is None:
-        return {"requests_total": 0, "errors_total": 0, "average_latency_ms": 0.0}
     return {
         "requests_total": telemetry.requests_total,
         "errors_total": telemetry.errors_total,

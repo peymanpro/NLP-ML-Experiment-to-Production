@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from nlp_ml_lab.retrieval.hybrid import reciprocal_rank_fusion
 from nlp_ml_lab.retrieval.lexical import BM25Retriever
+from nlp_ml_lab.retrieval.protocols import DenseSearcher
 from nlp_ml_lab.retrieval.reranker import CrossEncoderReranker
 
 
@@ -10,7 +11,7 @@ class HybridSearchPipeline:
     document_ids: list[str]
     documents: list[str]
     lexical: BM25Retriever
-    dense_search: object
+    dense_search: DenseSearcher
     reranker: CrossEncoderReranker | None = None
 
     def search(

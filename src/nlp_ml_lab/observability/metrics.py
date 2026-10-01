@@ -32,6 +32,11 @@ class LatencyTimer:
         self._start = perf_counter()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
+    def __exit__(
+        self,
+        exc_type: object | None,
+        exc_value: object | None,
+        traceback: object | None,
+    ) -> None:
         elapsed_ms = (perf_counter() - self._start) * 1000
         self.metrics.observe(elapsed_ms, error=exc_type is not None)
