@@ -22,8 +22,7 @@ def jensen_shannon_divergence(
     keys = set(reference_dist) | set(current_dist)
 
     midpoint = {
-        key: (reference_dist.get(key, 0.0) + current_dist.get(key, 0.0)) / 2
-        for key in keys
+        key: (reference_dist.get(key, 0.0) + current_dist.get(key, 0.0)) / 2 for key in keys
     }
 
     def kl_divergence(
@@ -41,6 +40,5 @@ def jensen_shannon_divergence(
         return value
 
     return float(
-        0.5 * kl_divergence(reference_dist, midpoint)
-        + 0.5 * kl_divergence(current_dist, midpoint)
+        0.5 * kl_divergence(reference_dist, midpoint) + 0.5 * kl_divergence(current_dist, midpoint)
     )
