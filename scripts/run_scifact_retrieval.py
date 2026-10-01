@@ -1,4 +1,3 @@
-
 import argparse
 from pathlib import Path
 
@@ -82,10 +81,7 @@ def main() -> None:
         if not relevant:
             continue
         ranked_indices = scores[row_index].argsort()[::-1][: args.top_k]
-        ranked_ids = [
-            corpus_contract.document_ids[index]
-            for index in ranked_indices
-        ]
+        ranked_ids = [corpus_contract.document_ids[index] for index in ranked_indices]
         cases.append((ranked_ids, relevant))
 
     metrics = evaluate_many(cases, k=args.top_k)
