@@ -33,15 +33,9 @@ def evaluate_one(
             reciprocal_rank = 1.0 / rank
             break
 
-    dcg = sum(
-        (1.0 if hit else 0.0) / log2(rank + 1)
-        for rank, hit in enumerate(hits, start=1)
-    )
+    dcg = sum((1.0 if hit else 0.0) / log2(rank + 1) for rank, hit in enumerate(hits, start=1))
     ideal_hits = min(len(relevant_ids), k)
-    idcg = sum(
-        1.0 / log2(rank + 1)
-        for rank in range(1, ideal_hits + 1)
-    )
+    idcg = sum(1.0 / log2(rank + 1) for rank in range(1, ideal_hits + 1))
     ndcg = dcg / idcg if idcg else 0.0
 
     return RetrievalMetrics(
@@ -60,10 +54,7 @@ def evaluate_many(
     if not cases:
         raise ValueError("cases must not be empty")
 
-    metrics = [
-        evaluate_one(retrieved, relevant, k=k)
-        for retrieved, relevant in cases
-    ]
+    metrics = [evaluate_one(retrieved, relevant, k=k) for retrieved, relevant in cases]
     return RetrievalMetrics(
         recall_at_k=sum(item.recall_at_k for item in metrics) / len(metrics),
         precision_at_k=sum(item.precision_at_k for item in metrics) / len(metrics),
