@@ -34,7 +34,6 @@ def train_logistic_regression(
     model = LogisticRegression(
         max_iter=max_iter,
         random_state=random_state,
-        multi_class="auto",
     )
     model.fit(features.matrix, np.asarray(labels))
     return LogisticRegressionBaseline(features=features, model=model)
