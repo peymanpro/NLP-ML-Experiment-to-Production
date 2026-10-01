@@ -9,12 +9,14 @@ class BiEncoderRetriever:
     document_ids: list[str]
     documents: list[str]
     model_id: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedder: SentenceTransformerEmbedder | None = None
 
     def __post_init__(self) -> None:
+        embedder = self.embedder or SentenceTransformerEmbedder(self.model_id)
         self._retriever = DenseRetriever(
             self.document_ids,
             self.documents,
-            SentenceTransformerEmbedder(self.model_id),
+            embedder,
         )
 
     def search(self, query: str, *, k: int = 10) -> list[tuple[str, float]]:
