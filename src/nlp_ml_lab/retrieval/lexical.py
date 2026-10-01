@@ -4,7 +4,7 @@ from math import log
 import re
 
 
-_TOKEN_PATTERN = re.compile(r"[\\w-]+")
+_TOKEN_PATTERN = re.compile(r"[\w-]+")
 
 
 def _tokens(text: str) -> list[str]:
