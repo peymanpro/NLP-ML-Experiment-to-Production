@@ -34,7 +34,4 @@ class CrossEncoderReranker:
             zip(candidates, scores),
             key=lambda item: (-float(item[1]), item[0][0]),
         )
-        return [
-            (document_id, float(score))
-            for (document_id, _), score in ranked[:k]
-        ]
+        return [(document_id, float(score)) for (document_id, _), score in ranked[:k]]
