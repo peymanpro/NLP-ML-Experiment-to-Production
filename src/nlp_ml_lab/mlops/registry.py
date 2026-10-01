@@ -1,7 +1,7 @@
 from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, cast, Dict, List
 
 
 @dataclass(frozen=True)
@@ -82,10 +82,10 @@ class ModelRegistry:
             if record.model_name == model_name and record.version == version
         )
 
-    def _read(self) -> list[dict[str, Any]]:
+    def _read(self) -> List[Dict[str, Any]]:
         if not self.path.exists():
             return []
         payload: Any = json.loads(self.path.read_text(encoding="utf-8"))
         if not isinstance(payload, list):
             raise TypeError("model registry file must contain a list")
-        return cast(list[dict[str, Any]], payload)
+        return cast(List[Dict[str, Any]], payload)
