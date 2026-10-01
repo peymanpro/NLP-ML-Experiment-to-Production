@@ -30,6 +30,5 @@ class DenseRetriever:
         result = self.index.search(query_vector, k=k)[0]
 
         return [
-            (self.document_ids[index], score)
-            for index, score in zip(result.ids, result.scores)
+            (self.document_ids[index], score) for index, score in zip(result.ids, result.scores)
         ]
