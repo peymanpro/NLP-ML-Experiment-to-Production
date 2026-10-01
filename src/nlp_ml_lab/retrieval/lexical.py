@@ -1,7 +1,7 @@
+import re
 from collections import Counter
 from dataclasses import dataclass
 from math import log
-import re
 
 
 _TOKEN_PATTERN = re.compile(r"[\w-]+")

@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import torch
-
 from nlp_ml_lab.models.pytorch_baseline import MeanEmbeddingClassifier
 from nlp_ml_lab.training.selection import BestCheckpoint
 

@@ -2,9 +2,9 @@ import os
 
 import uvicorn
 
+from nlp_ml_lab.serving import app as serving_module
 from nlp_ml_lab.serving.app import app
 from nlp_ml_lab.serving.loader import load_predictor_from_environment
-from nlp_ml_lab.serving import app as serving_module
 
 
 def main() -> None:

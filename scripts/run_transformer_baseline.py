@@ -9,14 +9,15 @@ from nlp_ml_lab.data.loaders import load_banking77
 from nlp_ml_lab.data.splits import split_frame
 from nlp_ml_lab.evaluation.classification import classification_metrics
 from nlp_ml_lab.models.huggingface import load_sequence_classifier
-from nlp_ml_lab.models.tokenization import tokenize_texts
 from nlp_ml_lab.models.transformer import TransformerClassifier
 from nlp_ml_lab.models.transformer_dataset import TransformerTextClassificationDataset
 from nlp_ml_lab.reproducibility import seed_everything
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the pretrained Transformer BANKING77 baseline.")
+    parser = argparse.ArgumentParser(
+        description="Run the pretrained Transformer BANKING77 baseline."
+    )
     parser.add_argument("--model-id", default="distilbert-base-uncased")
     parser.add_argument("--seed", type=int, default=11)
     parser.add_argument("--max-train", type=int, default=2500)
@@ -63,29 +64,11 @@ def main() -> None:
         validation_size=0.1,
     )
 
-    train_frame = split.train.head(args.max_train).copy()
     validation_frame = split.validation.head(args.max_validation).copy()
 
     bundle = load_sequence_classifier(
         args.model_id,
         num_labels=int(loaded["train"]["label"].nunique()),
-    )
-    tokenized_train = tokenize_texts(
-        bundle.tokenizer,
-        train_frame["text"].tolist(),
-        max_length=args.max_length,
-    )
-
-    # Keep an explicit batch-tokenization operation in the runner so the
-    # preprocessing cost is observable even though the Dataset performs the
-    # final padded tensor conversion for the model.
-    _ = tokenized_train
-
-    dataset = TransformerTextClassificationDataset(
-        train_frame["text"].tolist(),
-        train_frame["label"].tolist(),
-        tokenizer=bundle.tokenizer,
-        max_length=args.max_length,
     )
     validation_dataset = TransformerTextClassificationDataset(
         validation_frame["text"].tolist(),
@@ -93,8 +76,6 @@ def main() -> None:
         tokenizer=bundle.tokenizer,
         max_length=args.max_length,
     )
-
-    train_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=False)
     validation_loader = DataLoader(
         validation_dataset,
         batch_size=args.batch_size,
@@ -104,8 +85,6 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = TransformerClassifier(bundle.model).to(device)
 
-    # This baseline intentionally performs inference only. Fine-tuning begins
-    # in the dedicated fine-tuning phase after the pretrained baseline is measured.
     predictions = predict(model, validation_loader, device=device)
     metrics = classification_metrics(
         validation_frame["label"].tolist(),
@@ -118,7 +97,6 @@ def main() -> None:
             {
                 "model_id": args.model_id,
                 "device": str(device),
-                "train_samples": len(train_frame),
                 "validation_samples": len(validation_frame),
                 "max_length": args.max_length,
                 "metrics": __import__("dataclasses").asdict(metrics),

@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from nlp_ml_lab.data.splits import split_frame
 from nlp_ml_lab.evaluation.classification import classification_metrics
 from nlp_ml_lab.models.classical import train_logistic_regression

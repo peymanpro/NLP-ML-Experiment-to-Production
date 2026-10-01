@@ -20,7 +20,7 @@ def summarize_latencies(values_ms: list[float]) -> LatencySummary:
     def percentile(percent: float) -> float:
         index = min(
             len(ordered) - 1,
-            max(0, int(round((percent / 100) * (len(ordered) - 1)))),
+            max(0, round((percent / 100) * (len(ordered) - 1))),
         )
         return float(ordered[index])
 

@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from collections.abc import Iterable, Mapping
+from dataclasses import dataclass
 
 import torch
 from torch import nn

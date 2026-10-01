@@ -1,11 +1,11 @@
 import torch
 from torch.utils.data import DataLoader
 
+from nlp_ml_lab.models.pytorch_baseline import MeanEmbeddingClassifier
 from nlp_ml_lab.models.pytorch_dataset import (
     TextClassificationDataset,
     collate_text_classification,
 )
-from nlp_ml_lab.models.pytorch_baseline import MeanEmbeddingClassifier
 from nlp_ml_lab.text.vocabulary import build_vocabulary
 from nlp_ml_lab.training.loops import evaluate, train_one_epoch
 

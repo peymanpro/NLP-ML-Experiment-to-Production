@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from time import perf_counter
+from types import TracebackType
+from typing import Self
 
 
 @dataclass
@@ -28,15 +30,15 @@ class LatencyTimer:
         self.metrics = metrics
         self._start = 0.0
 
-    def __enter__(self) -> "LatencyTimer":
+    def __enter__(self) -> Self:
         self._start = perf_counter()
         return self
 
     def __exit__(
         self,
-        exc_type: object | None,
-        exc_value: object | None,
-        traceback: object | None,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         elapsed_ms = (perf_counter() - self._start) * 1000
         self.metrics.observe(elapsed_ms, error=exc_type is not None)
