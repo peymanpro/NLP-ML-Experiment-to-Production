@@ -2,7 +2,7 @@
 
 ## Classification
 
-BANKING77 is the initial classification benchmark because it provides a realistic multi-class intent-routing task with short natural-language queries.
+BANKING77 is the initial classification benchmark because it provides a fine-grained multi-class intent-routing task with short natural-language queries. The upstream Hugging Face dataset is `PolyAI/banking77`; the dataset card identifies English intent classification, 13,083 queries, 77 intents, train/test splits, and CC BY 4.0 licensing. citeturn621360search0turn621360search1
 
 The dataset itself is not committed to source control.
 
