@@ -1,0 +1,17 @@
+services:
+  api:
+    build: .
+    environment:
+      NLP_ML_HOST: 0.0.0.0
+      NLP_ML_PORT: 8000
+      NLP_ML_MODEL_PATH: /app/model
+      NLP_ML_MODEL_VERSION: local
+    volumes:
+      - ./models/serving:/app/model:ro
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
