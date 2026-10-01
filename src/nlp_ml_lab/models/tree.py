@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 from sklearn.decomposition import TruncatedSVD
@@ -16,7 +17,8 @@ class RandomForestBaseline:
     def predict(self, texts: list[str]) -> list[int]:
         matrix = transform_tfidf(texts, vectorizer=self.features.vectorizer)
         reduced = self.reducer.transform(matrix)
-        return self.model.predict(reduced).astype(int).tolist()
+        predictions: Any = self.model.predict(reduced)
+        return [int(value) for value in predictions.tolist()]
 
 
 def train_random_forest_baseline(
