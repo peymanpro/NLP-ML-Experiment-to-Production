@@ -1,9 +1,7 @@
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
-
 import pandas as pd
-from datasets import DatasetDict, load_dataset
+from datasets import load_dataset
 
 
 def load_huggingface_frame(
@@ -39,7 +37,7 @@ def load_huggingface_frame(
 def load_banking77(
     *,
     cache_dir: Path,
-    dataset_id: str = "mteb/banking77",
+    dataset_id: str = "PolyAI/banking77",
 ) -> Mapping[str, pd.DataFrame]:
     """Load the available BANKING77 splits without storing the dataset in Git."""
 
