@@ -9,10 +9,13 @@ class TextClassificationSchema:
     label_column: str = "label"
 
 
+_DEFAULT_SCHEMA = TextClassificationSchema()
+
+
 def validate_text_classification_frame(
     frame: pd.DataFrame,
     *,
-    schema: TextClassificationSchema = TextClassificationSchema(),
+    schema: TextClassificationSchema = _DEFAULT_SCHEMA,
 ) -> None:
     """Validate the minimum contract required by classification components."""
 
