@@ -10,8 +10,7 @@ from nlp_ml_lab.observability.metrics import InferenceMetrics
 class TextPredictor(Protocol):
     model_version: str
 
-    def predict(self, text: str) -> tuple[str, float]:
-        ...
+    def predict(self, text: str) -> tuple[str, float]: ...
 
 
 @dataclass
