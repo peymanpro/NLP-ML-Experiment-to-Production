@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 from sklearn.linear_model import LogisticRegression
@@ -13,7 +14,8 @@ class LogisticRegressionBaseline:
 
     def predict(self, texts: list[str]) -> list[int]:
         matrix = transform_tfidf(texts, vectorizer=self.features.vectorizer)
-        return self.model.predict(matrix).astype(int).tolist()
+        predictions: Any = self.model.predict(matrix)
+        return [int(value) for value in predictions.tolist()]
 
 
 def train_logistic_regression(
