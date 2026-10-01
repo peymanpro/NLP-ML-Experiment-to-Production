@@ -32,9 +32,7 @@ def test_split_frame_is_reproducible() -> None:
         (0.8, 0.3),
     ],
 )
-def test_split_frame_rejects_invalid_sizes(
-    test_size: float, validation_size: float
-) -> None:
+def test_split_frame_rejects_invalid_sizes(test_size: float, validation_size: float) -> None:
     with pytest.raises(ValueError):
         split_frame(
             make_frame(),
