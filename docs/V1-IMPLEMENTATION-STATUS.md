@@ -31,17 +31,19 @@ The source repository intentionally does not contain fabricated benchmark result
 
 Public datasets and model weights are downloaded by explicit experiment runners. Their outputs become portfolio evidence only after an actual run produces the result.
 
-## Verification policy
+## Verification
 
-The final source revision must pass:
+The implementation revision `f8ea33d35862310ab853c065a8664d3527cdbfb8` was verified by:
 
-- pytest;
-- Ruff linting;
-- Ruff formatting check;
-- mypy.
-
-Benchmark execution remains separate from CI because it may download large datasets/model weights and require substantial compute.
+- GitHub Actions quality run `36886823091`: **success**;
+- GitHub Actions smoke run `36886823125`: **success**;
+- pytest: **94 passed**;
+- Ruff lint: **passed**;
+- Ruff format check: **passed**;
+- mypy: **passed**.
 
 ## Current state
 
-The repository contains the complete V1 implementation. The final CI verification is the remaining release gate for this revision.
+The repository contains the complete declared V1 implementation and its automated quality gates.
+
+Benchmark execution remains separate from CI because it may download large datasets/model weights and require substantial compute. No benchmark performance number is presented as measured evidence unless a corresponding experiment runner has actually produced it.
