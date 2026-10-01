@@ -1,11 +1,16 @@
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
+faiss: Any = None
+
 try:
-    import faiss
+    import faiss as _faiss
 except ImportError:  # pragma: no cover - exercised only in minimal environments
-    faiss = None
+    pass
+else:
+    faiss = _faiss
 
 
 @dataclass(frozen=True)
@@ -47,7 +52,11 @@ class FaissInnerProductIndex:
         return [
             VectorSearchResult(
                 ids=[int(value) for value in row_indices if value >= 0],
-                scores=[float(value) for value, row_indices in zip(row_scores, row_indices) if row_indices >= 0],
+                scores=[
+                    float(value)
+                    for value, row_indices in zip(row_scores, row_indices)
+                    if row_indices >= 0
+                ],
             )
             for row_indices, row_scores in zip(indices, scores)
         ]
