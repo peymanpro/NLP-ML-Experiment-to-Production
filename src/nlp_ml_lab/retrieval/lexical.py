@@ -69,9 +69,7 @@ class BM25Retriever:
                     continue
                 df = self._doc_frequency[term]
                 idf = log(1.0 + (len(self.documents) - df + 0.5) / (df + 0.5))
-                denominator = frequency + self.k1 * (
-                    1 - self.b + self.b * length / self._avgdl
-                )
+                denominator = frequency + self.k1 * (1 - self.b + self.b * length / self._avgdl)
                 score += idf * (frequency * (self.k1 + 1)) / denominator
 
             scored.append(LexicalResult(document_id=document_id, score=score))
