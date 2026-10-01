@@ -20,7 +20,11 @@ def test_reranker_orders_candidates_by_model_score() -> None:
         [("a", "doc a"), ("b", "doc b"), ("c", "doc c")],
     )
 
-    assert result == [("b", pytest.approx(0.9)), ("c", pytest.approx(0.5)), ("a", pytest.approx(0.2))]
+    assert result == [
+        ("b", pytest.approx(0.9)),
+        ("c", pytest.approx(0.5)),
+        ("a", pytest.approx(0.2)),
+    ]
 
 
 def test_reranker_rejects_blank_query() -> None:
