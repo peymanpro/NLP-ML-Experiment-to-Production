@@ -1,4 +1,3 @@
-
 import pandas as pd
 import pytest
 
@@ -10,17 +9,9 @@ from nlp_ml_lab.retrieval.benchmark import (
 
 
 def test_benchmark_frames_become_typed_contracts() -> None:
-    corpus = load_corpus_frame(
-        pd.DataFrame({"_id": ["d1"], "text": ["document"]})
-    )
-    queries = load_queries_frame(
-        pd.DataFrame({"_id": ["q1"], "text": ["query"]})
-    )
-    qrels = load_qrels_frame(
-        pd.DataFrame(
-            {"query-id": ["q1"], "corpus-id": ["d1"], "score": [1]}
-        )
-    )
+    corpus = load_corpus_frame(pd.DataFrame({"_id": ["d1"], "text": ["document"]}))
+    queries = load_queries_frame(pd.DataFrame({"_id": ["q1"], "text": ["query"]}))
+    qrels = load_qrels_frame(pd.DataFrame({"query-id": ["q1"], "corpus-id": ["d1"], "score": [1]}))
 
     assert corpus.document_ids == ["d1"]
     assert queries.query_ids == ["q1"]
