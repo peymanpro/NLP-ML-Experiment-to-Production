@@ -1,6 +1,5 @@
 import re
 
-
 _VERSION_PATTERN = re.compile(r"^v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
 
 

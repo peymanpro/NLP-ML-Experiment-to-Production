@@ -1,7 +1,6 @@
 import re
 import unicodedata
 
-
 _WHITESPACE = re.compile(r"\s+")
 
 
