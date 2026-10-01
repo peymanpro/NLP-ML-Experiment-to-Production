@@ -29,11 +29,7 @@ def build_vocabulary(
     if min_frequency <= 0:
         raise ValueError("min_frequency must be positive")
 
-    counts = Counter(
-        token
-        for text in texts
-        for token in normalize_text(text).split()
-    )
+    counts = Counter(token for text in texts for token in normalize_text(text).split())
 
     token_to_id = {"<pad>": 0, "<unk>": 1}
     for token in sorted(token for token, count in counts.items() if count >= min_frequency):
