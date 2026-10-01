@@ -26,9 +26,7 @@ def load_huggingface_frame(
     dataset = load_dataset(dataset_id, split=split, cache_dir=str(cache_dir))
 
     if not hasattr(dataset, "to_pandas"):
-        raise TypeError(
-            f"dataset split does not support dataframe conversion: {type(dataset)!r}"
-        )
+        raise TypeError(f"dataset split does not support dataframe conversion: {type(dataset)!r}")
 
     frame = dataset.to_pandas()
     if not isinstance(frame, pd.DataFrame):
