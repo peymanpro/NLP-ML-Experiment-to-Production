@@ -1,3 +1,5 @@
+from typing import cast
+
 import torch
 from torch import nn
 
@@ -38,4 +40,4 @@ class MeanEmbeddingClassifier(nn.Module):
         mask = attention_mask.unsqueeze(-1).to(dtype=embedded.dtype)
         lengths = mask.sum(dim=1).clamp_min(1.0)
         pooled = (embedded * mask).sum(dim=1) / lengths
-        return self.classifier(pooled)
+        return cast(torch.Tensor, self.classifier(pooled))
