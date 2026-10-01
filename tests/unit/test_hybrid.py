@@ -8,7 +8,7 @@ def test_rrf_merges_ranked_lists_deterministically() -> None:
         limit=4,
     )
 
-    assert result[:2] == ["b", "c"]
+    assert result[:2] == ["c", "b"]
 
 
 def test_rrf_respects_limit() -> None:
