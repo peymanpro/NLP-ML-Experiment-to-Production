@@ -111,12 +111,8 @@ def main() -> None:
 
     history = []
     for epoch in range(1, config.epochs + 1):
-        train_result = train_one_epoch(
-            model, train_loader, optimizer, device=device
-        )
-        validation_result = evaluate(
-            model, validation_loader, device=device
-        )
+        train_result = train_one_epoch(model, train_loader, optimizer, device=device)
+        validation_result = evaluate(model, validation_loader, device=device)
         history.append(
             {
                 "epoch": epoch,
